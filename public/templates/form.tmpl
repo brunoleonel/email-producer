@@ -1,0 +1,49 @@
+<!DOCTYPE=html>
+<html>
+    <head>
+        <title>Envio de e-mail</title>
+    </head>
+    <body>
+        <div class="container">
+            <h3>Envio de e-mail</h3>
+            <hr/>
+            <form action="/" method="POST">
+                <label>Destinatário:</label>
+                <input type="text" name="to" value={{.to}}/>
+                <label>Assunto:</label>
+                <input type="text" name="subject" value={{.subject}}/>
+                <label>Mensagem:</label>
+                <textarea name="message" value={{.message}}>
+                </textarea>
+                <input type="submit" value="Enviar" />
+            </form>
+        </div>
+    </body>
+    <style>
+        h3 {
+            text-align: center;
+        }
+        hr {
+            height: 0.5px;
+        }
+        input, textarea {
+            width: 80%;
+            margin: auto;
+            display: block;
+            padding: 5px;
+        }
+        label {
+            width: 80%;
+            margin: auto;
+            margin-top: 10px;
+            display: block;
+        }
+        input[type="submit"] {
+            margin-top: 10px;
+        }
+        .container {
+            width:70%;
+            margin: auto;
+        }
+    </style>
+</html>

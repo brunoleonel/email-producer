@@ -32,6 +32,7 @@ func SendMail(email model.Email, context *context.Context) {
 		mail.Subject = fmt.Sprintf("[Monitoramento] Novo e-mail enviado para %s", email.To)
 		mail.Message = fmt.Sprintf("Texto enviado: %s", email.Message)
 		mails = append(mails, mail)
+		count++
 	}
 
 	mails = append(mails, email)
@@ -44,5 +45,6 @@ func SendMail(email model.Email, context *context.Context) {
 		go queue.AddMessage(body)
 	}
 
+	context.Redirect("/")
 	return
 }

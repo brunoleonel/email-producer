@@ -8,31 +8,33 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func getChannel() (channel *amqp.Channel, err error) {
+func failOnError(err error, msg string) {
+	if err != nil {
+		log.Printf("%s: %s", msg, err)
+		return
+	}
+}
+
+func getAddress() string {
 
 	host := conf.Cfg.Section("").Key("queue_host").Value()
 	user := conf.Cfg.Section("").Key("queue_user").Value()
 	pass := conf.Cfg.Section("").Key("queue_pass").Value()
 	port := conf.Cfg.Section("").Key("queue_port").Value()
-	address := fmt.Sprintf("amqp://%s:%s@%s:%s", user, pass, host, port)
+	address := fmt.Sprintf("amqp://%s:%s@%s:%s/", user, pass, host, port)
 
-	conn, err := amqp.Dial(address)
-	defer conn.Close()
-
-	channel, err = conn.Channel()
-
-	if err != nil {
-		log.Println("[queue] Houve um erro na conexão com o servidor AMQP: " + err.Error())
-		return
-	}
-
-	return
+	return address
 }
 
 //AddMessage - Cria uma nova mensagem e adiciona à fila
 func AddMessage(json []byte) {
 
-	channel, err := getChannel()
+	conn, err := amqp.Dial(getAddress())
+	failOnError(err, "[queue] Houve um erro ao conectar com o servidor AMQP")
+	defer conn.Close()
+
+	channel, err := conn.Channel()
+	failOnError(err, "[queue] Houve um erro na abertura de canal com o servidor AMQP")
 	defer channel.Close()
 
 	queue, err := channel.QueueDeclare(
@@ -44,10 +46,7 @@ func AddMessage(json []byte) {
 		nil,
 	)
 
-	if err != nil {
-		log.Println("[queue] Houve um erro ao enviar a mensagem para servidor AMQP: " + err.Error())
-		return
-	}
+	failOnError(err, "[queue] Houve um erro na criação da fila no servidor AMQP")
 
 	err = channel.Publish(
 		"",
@@ -59,10 +58,7 @@ func AddMessage(json []byte) {
 			Body:        json,
 		})
 
-	if err != nil {
-		log.Println("[queue] Houve um erro ao enviar a mensagem para servidor AMQP: " + err.Error())
-		return
-	}
+	failOnError(err, "[queue] Houve um erro no envio da mensagem para o servidor AMQP")
 
 	log.Println("Email enviado para a fila")
 	return

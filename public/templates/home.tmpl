@@ -6,25 +6,23 @@
     </head>
     <body>
         <div class="container">
-            <h3>Envio de e-mail por 1 worker</h3>
-            <form action="/" method="POST">
-                <label>Destinatário:</label>
-                <input type="text" name="to" value={{.to}}/>
-                <label>Assunto:</label>
-                <input type="text" name="subject" value={{.subject}}/>
-                <label>Mensagem:</label>
-                <textarea name="message">
-                    {{.message}}
-                </textarea>
-                <input type="submit" value="Enviar" />
-            </form>
+            <h2>Envio de e-mails enfileirados pelo RabbitMQ</h2>
+            <h3>De que forma você deseja enviar os e-mails?</h3>
+            <a href="/email" class="minion">
+                <img src="/img/worker.png" alt="minion"/>
+                <span>1 worker</span>
+            </a>
+            <a href="/email/concurrent" class="minion">
+                <img src="/img/concorrentes.png" alt="minions"/>
+                <span>Workers concorrentes</span>
+            </a>
         </div>
     </body>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
         }
-        h3 {
+        h2, h3 {
             text-align: center;
         }
         hr {
@@ -46,9 +44,22 @@
             margin-top: 10px;
         }
         .container {
-            width:70%;
+            width:60%;
             margin: auto;
             padding: 10%;
+        }
+        .minion {
+            text-decoration: none;
+            text-align: center;
+            margin: 15%;
+            display: inline-block;
+        }
+        .minion > img {
+            display: block;
+        }
+        .minion > span {
+            text-align: center;
+            display: inline-block;
         }
     </style>
 </html>

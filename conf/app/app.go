@@ -63,6 +63,13 @@ func SetupMiddlewares(app *macaron.Macaron) {
 
 //SetupRoutes defines the routes the Web Application will respond
 func SetupRoutes(app *macaron.Macaron) {
-	app.Get("/", handler.ShowForm)
-	app.Post("/", binding.Bind(model.Email{}), handler.SendMail)
+
+	app.Get("/", handler.Home)
+
+	app.Group("/email", func() {
+		app.Get("/", handler.ShowForm)
+		app.Post("/", binding.Bind(model.Email{}), handler.SendMail)
+		app.Get("/concurrent", handler.ShowFormConc)
+		app.Post("/concurrent", binding.Bind(model.Email{}), handler.SendMailConc)
+	})
 }

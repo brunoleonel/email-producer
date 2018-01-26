@@ -6,8 +6,8 @@ import (
 	"github.com/streadway/amqp"
 )
 
-//AddMessage - Cria uma nova mensagem e adiciona à fila
-func AddMessage(json []byte) {
+//AddConcurrentMessage - Cria uma nova mensagem e adiciona à fila
+func AddConcurrentMessage(json []byte) {
 
 	conn, err := amqp.Dial(GetAddress())
 	FailOnError(err, "[queue] Houve um erro ao conectar com o servidor AMQP")
@@ -34,8 +34,9 @@ func AddMessage(json []byte) {
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "application/json",
-			Body:        json,
+			DeliveryMode: amqp.Persistent,
+			ContentType:  "application/json",
+			Body:         json,
 		})
 
 	FailOnError(err, "[queue] Houve um erro no envio da mensagem para o servidor AMQP")

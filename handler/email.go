@@ -45,6 +45,6 @@ func SendMail(email model.Email, context *context.Context) {
 		go queue.AddMessage(body)
 	}
 
-	context.Redirect("/")
+	context.Redirect("/email")
 	return
 }

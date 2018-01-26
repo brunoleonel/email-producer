@@ -42,9 +42,9 @@ func SendMailConc(email model.Email, context *context.Context) {
 		if err != nil {
 			log.Println("[handler/email] Houve um erro: ", err.Error())
 		}
-		go queue.AddMessage(body)
+		go queue.AddConcurrentMessage(body)
 	}
 
-	context.Redirect("/")
+	context.Redirect("/email/concurrent")
 	return
 }

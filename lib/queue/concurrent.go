@@ -18,8 +18,8 @@ func AddConcurrentMessage(json []byte) {
 	defer channel.Close()
 
 	queue, err := channel.QueueDeclare(
-		"email",
-		false,
+		"email_conc",
+		true, //durable
 		false,
 		false,
 		false,

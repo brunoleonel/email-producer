@@ -14,7 +14,7 @@ import (
 func ShowForm(context *context.Context) {
 	context.Data["to"] = "exemplo@teste.com"
 	context.Data["subject"] = "Teste de envio de e-mail"
-	context.Data["Message"] = "Escreva sua mensagem aqui..."
+	context.Data["message"] = "Escreva sua mensagem aqui..."
 	context.NativeHTML(200, "form")
 	return
 }
